@@ -1,0 +1,18 @@
+# * Datasets parameters
+dataset:
+  root_dir: data/KITTIDataset
+  cache_dir: cache
+  use_3d_center: True
+  bbox2d_type: 'anno' # 'proj' or 'anno'
+  meanshape: False # use predefined anchor or not
+  writelist: ['Car']
+  clip_2d: False
+
+  aug_pd: True
+  aug_crop: True
+
+  random_flip: 0.5
+  random_crop: 0.5
+  random_mixup3d: 0.5
+  scale: 0.05
+  shift: 0.05

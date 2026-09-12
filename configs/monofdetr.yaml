@@ -1,0 +1,61 @@
+__base__:
+  - __base__/base.yaml
+  - __base__/accelerator.yaml
+  - __base__/hub.yaml
+  - __base__/kitti_dataset.yaml
+
+# Accelerator
+with_tracking: False
+report_to: 'wandb'
+project_name: 'MonoFDETR'
+mixed_precision: 'no'
+
+# Dataset
+dataset:
+  root_dir: data/KITTIDataset
+
+model:
+  num_labels: 3
+
+  # Backbone
+  use_torchvision_backbone: False
+  use_timm_backbone: True
+  backbone: 'resnet50'
+  pretrained_backbone_path: 'pretrained-models/resnet50/model.safetensors'
+  num_feature_levels: 4
+  freeze_backbone: True
+
+  # Depth Predictor
+  pretrained_dpt_path: 'pretrained-models/depth-anything-v2-small'
+  
+  # Transformer
+  with_box_refine: True
+  two_stage: False
+  encoder_layers: 3
+  decoder_layers: 3
+  d_model: 256
+  encoder_ffn_dim: 256
+  decoder_ffn_dim: 256
+  num_queries: 50
+  decoder_self_attn: True
+  decoder_depth_residual: True
+  auxiliary_loss: True
+
+learning_rate: 1.0e-4
+lr_scheduler:
+  type: multi_step
+  decay_list: [40, 70, 110]
+  decay_rate: 0.5
+  num_warmup_steps: 0
+
+# Training
+output_dir: outputs/monofdetr
+num_train_epochs: 160
+dataloader_num_workers: 0
+train_batch_size: &batch_size 10
+valid_batch_size: *batch_size
+test_batch_size: *batch_size
+freeze_encoder: False
+# monodetr_model: 'pretrained-models/monodetr/checkpoint_best.pth'
+pretrain_model: 'outputs/monodetr-dpt-reg-derr/checkpoints/best'
+# resume_from_checkpoint: 'outputs/monodetr-dpt/checkpoints/latest'
