@@ -181,3 +181,8 @@ pretrained-models
 
 # ipython
 *.ipynb
+
+# additional
+*.safetensors
+*.7z
+*.pkl
